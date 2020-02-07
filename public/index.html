@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <title>
+       weatherApp
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+
+
+
+
+    <style>
+        #checkinMap {
+            height: 340px;
+            margin: 8px 0px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="headDiv">
+        <h2>weatherApp  </h2>
+    </div>
+        <p>Latitude: <span id="lat"> </span>&deg; <br>
+            Longitude: <span id="lon"> </span>&deg; <br>
+
+        </p>
+        <div class=" active  p-1">
+            <p> <span style="font-size: 25px;">The weather informartion <br></span> <strong>City:</strong> <span
+                    id="city" class="text-primary"></span> <br>
+                <strong>Temprature:</strong> <span id="temp" class="text-primary "></span> &deg;F <br> <strong>
+                    Atmosphere:</strong> <span class="text-primary" id="summary"></span> <br>
+
+                <strong> Value:</strong> <span id="aq_value" class="text-primary "></span> <br>
+                <strong> Unit:</strong> <span id="aq_unit" class="text-primary "></span> <br>
+                <strong> Parameters:</strong> <span id="aq_param" class="text-primary "></span> <br>
+                <strong>Last updated: </strong> <span id="aq_update" class="text-primary "></span>
+
+
+            </p>
+        </div>
+        <!-- <div><a href="/">check in</a> | <a href="/all.html">view checkins</a></div> -->
+        <div id="checkinMap"> MyMap</div>
+    </div>
+    <script>
+        if ("geolocation" in navigator) {
+            let latitude, longitude, weather, air, weather_time;
+
+            console.log("GeoLocation is available");
+           
+            navigator.geolocation.getCurrentPosition(async position => {
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+
+                try {
+
+
+                    console.log(position);
+                    document.getElementById('lat').textContent = latitude;
+                    document.getElementById('lon').textContent = longitude;
+                    const response = await fetch(`weather/${latitude},${longitude}`);
+                    const json = await response.json();
+
+                     weather_time = json.weather.timezone;
+                     weather = json.weather.currently;
+                     air = json.openaq.results[0].measurements[0];
+
+
+                    console.log(json);
+                    document.getElementById('city').textContent = weather_time;
+                    document.getElementById('temp').textContent = weather.temperature;
+                    document.getElementById('summary').textContent = weather.summary;
+                    document.getElementById('aq_value').textContent = air.value;
+                    document.getElementById('aq_param').textContent = air.parameter;
+                    document.getElementById('aq_unit').textContent = air.unit;
+                    document.getElementById('aq_update').textContent = air.lastUpdated;
+                } catch (error) {
+                    console.error(error);
+                }
+               
+                const data = { latitude, longitude, weather, air, weather_time }
+                console.log(data);
+                options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+                
+                const db_response = await fetch('/api', options)
+                const db_json = await db_response.json();
+                console.log(db_json);
+            });
+
+        } else {
+            console.log("GeoLocation is  unavailable");
+        }
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="logs.js"></script>
+</body>
+
+</html>
