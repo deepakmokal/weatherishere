@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+
+body{
+    font-family: 'Raleway', sans-serif;
+    margin: 1em;
+    color: #212529;
+}
+.headDiv{
+    /* background: url('../images/weather_map.jpg');
+    background-repeat: no-repeat;
+    background-size:cover; */
+    background: linear-gradient(26deg, #DCE35B, #45B649);
+    position: relative;
+    height: 350px;
+}
+
+.latlonDiv{
+    position: absolute;
+    top: 0;
+    right:0;
+    padding: 1em;
+    color: aliceblue;
+}
+
+.active{
+    position: relative;
+    top: 100;
+    left:10;
+}
