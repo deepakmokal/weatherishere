@@ -2,13 +2,13 @@
 
 <head>
     <title>
-       weatherApp
+        weatherApp
     </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/css/style.css">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
@@ -20,7 +20,7 @@
 
     <style>
         #checkinMap {
-            height: 340px;
+            height: 400px;
             margin: 8px 0px;
             border: 1px solid #000;
         }
@@ -30,35 +30,42 @@
 <body>
     <div class="container-fluid">
         <div class="headDiv">
-        <h2>weatherApp  </h2>
-    </div>
-        <p>Latitude: <span id="lat"> </span>&deg; <br>
-            Longitude: <span id="lon"> </span>&deg; <br>
+            <div class="latlonDiv">
+                <h2>weatherApp </h2>
 
-        </p>
-        <div class=" active  p-1">
-            <p> <span style="font-size: 25px;">The weather informartion <br></span> <strong>City:</strong> <span
-                    id="city" class="text-primary"></span> <br>
-                <strong>Temprature:</strong> <span id="temp" class="text-primary "></span> &deg;F <br> <strong>
-                    Atmosphere:</strong> <span class="text-primary" id="summary"></span> <br>
+                <p>Latitude: <span id="lat"> </span>&deg; <br>
+                    Longitude: <span id="lon"> </span>&deg; <br>
 
-                <strong> Value:</strong> <span id="aq_value" class="text-primary "></span> <br>
-                <strong> Unit:</strong> <span id="aq_unit" class="text-primary "></span> <br>
-                <strong> Parameters:</strong> <span id="aq_param" class="text-primary "></span> <br>
-                <strong>Last updated: </strong> <span id="aq_update" class="text-primary "></span>
+                </p>
+            </div>
+
+            <div class=" active  p-2 ">
+                <p> <span style="font-size: 25px;margin-top:35px;" class="text-white">The weather informartion <br></span> <strong>City:</strong> <span
+                        id="city" class="text-primary"></span> <br>
+                    <strong>Temprature:</strong> <span id="temp" class="text-primary "></span> &deg;F <br> <strong>
+                        Atmosphere:</strong> <span class="text-primary" id="summary"></span> <br>
+
+                    <strong> Value:</strong> <span id="aq_value" class="text-primary "></span> <br>
+                    <strong> Unit:</strong> <span id="aq_unit" class="text-primary "></span> <br>
+                    <strong> Parameters:</strong> <span id="aq_param" class="text-primary "></span> <br>
+                    <strong>Last updated: </strong> <span id="aq_update" class="text-primary "></span>
 
 
-            </p>
+                </p>
+            </div>
         </div>
         <!-- <div><a href="/">check in</a> | <a href="/all.html">view checkins</a></div> -->
         <div id="checkinMap"> MyMap</div>
+        <div class="footer">
+            My Footer
+        </div>
     </div>
     <script>
         if ("geolocation" in navigator) {
             let latitude, longitude, weather, air, weather_time;
 
             console.log("GeoLocation is available");
-           
+
             navigator.geolocation.getCurrentPosition(async position => {
                 latitude = position.coords.latitude;
                 longitude = position.coords.longitude;
@@ -72,9 +79,9 @@
                     const response = await fetch(`weather/${latitude},${longitude}`);
                     const json = await response.json();
 
-                     weather_time = json.weather.timezone;
-                     weather = json.weather.currently;
-                     air = json.openaq.results[0].measurements[0];
+                    weather_time = json.weather.timezone;
+                    weather = json.weather.currently;
+                    air = json.openaq.results[0].measurements[0];
 
 
                     console.log(json);
@@ -88,7 +95,7 @@
                 } catch (error) {
                     console.error(error);
                 }
-               
+
                 const data = { latitude, longitude, weather, air, weather_time }
                 console.log(data);
                 options = {
@@ -98,7 +105,7 @@
                     },
                     body: JSON.stringify(data)
                 }
-                
+
                 const db_response = await fetch('/api', options)
                 const db_json = await db_response.json();
                 console.log(db_json);
