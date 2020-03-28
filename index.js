@@ -1,4 +1,6 @@
 const express = require('express');
+var favicon = require('serve-favicon');
+var path = require('path');
 const Datastore = require('nedb')
 const app = express();
 const fetch = require('node-fetch');
@@ -8,6 +10,7 @@ const timestamp = Date.now();
 const database = new Datastore('darabase.db');
 
 app.use(express.static('public'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.png')))
 app.use(express.json({limit:'1mb'}));
 app.listen(port, ()=>{console.log(`api server is runnning on ${port}`)});
 database.loadDatabase();

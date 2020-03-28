@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    
     <title>
         weatherApp
     </title>
@@ -14,9 +15,6 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
-
-
-
 
     <style>
         #checkinMap {
@@ -93,7 +91,7 @@
                     document.getElementById('aq_unit').textContent = air.unit;
                     document.getElementById('aq_update').textContent = air.lastUpdated;
                 } catch (error) {
-                    console.error(error);
+                    console.log(error);
                 }
 
                 const data = { latitude, longitude, weather, air, weather_time }
